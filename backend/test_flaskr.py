@@ -72,6 +72,28 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'resource not found')
 
+    def test_create_question(self):
+        with self.app.app_context():
+            from models import Question
+            question = Question(
+                question='What is the capital of Brazil?',
+                answer='Brasília',
+                difficulty=1,
+                category=3
+            )
+            res = self.client().post('/questions', json=question.format())
+            data = json.loads(res.data)
+            self.assertEqual(res.status_code, 200)
+            self.assertEqual(data['success'], True)
+            self.assertTrue(data['created'])
+    
+    def test_400_create_question(self):
+        res = self.client().post('/questions', json={})
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code, 400)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'bad request')
+
 # Make the tests conveniently executable
 if __name__ == "__main__":
     unittest.main()
