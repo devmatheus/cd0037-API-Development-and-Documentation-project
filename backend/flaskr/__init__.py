@@ -162,7 +162,6 @@ def create_app(test_config=None):
             except:
                 abort(422)
 
-
         """
         @TODO:
         Create a POST endpoint to get questions based on a search term.
@@ -173,6 +172,20 @@ def create_app(test_config=None):
         only question that include that string within their question.
         Try using the word "title" to start.
         """
+        @app.route('/questions/search', methods=['POST'])
+        def search_questions():
+            body = request.get_json()
+            if not 'searchTerm' in body:
+                abort(400)
+            search_term = body.get('searchTerm')
+            questions = Question.query.filter(Question.question.ilike(f'%{search_term}%')).all()
+            formatted_questions = [question.format() for question in questions]
+            return jsonify({
+                'success': True,
+                'questions': formatted_questions,
+                'totalQuestions': len(questions),
+                'currentCategory': None
+            })
 
         """
         @TODO:
@@ -193,12 +206,6 @@ def create_app(test_config=None):
         TEST: In the "Play" tab, after a user selects "All" or a category,
         one question at a time is displayed, the user is allowed to answer
         and shown whether they were correct or not.
-        """
-
-        """
-        @TODO:
-        Create error handlers for all expected errors
-        including 404 and 422.
         """
 
     return app
