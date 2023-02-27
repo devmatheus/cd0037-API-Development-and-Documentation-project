@@ -197,11 +197,14 @@ def create_app(test_config=None):
         """
         @app.route('/categories/<int:category_id>/questions')
         def get_questions_by_category(category_id):
+            page = request.args.get('page', 1, type=int)
+            start = (page - 1) * QUESTIONS_PER_PAGE
+            end = start + QUESTIONS_PER_PAGE
             category = Category.query.get(category_id)
             if category is None:
                 abort(404)
             questions = Question.query.filter(Question.category == str(category_id)).all()
-            formatted_questions = [question.format() for question in questions]
+            formatted_questions = [question.format() for question in questions][start:end]
             return jsonify({
                 'success': True,
                 'questions': formatted_questions,

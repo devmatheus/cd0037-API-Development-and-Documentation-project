@@ -21,10 +21,16 @@ class QuizView extends Component {
 
   componentDidMount() {
     $.ajax({
-      url: `/categories`, //TODO: update request URL
+      url: `/categories`,
       type: 'GET',
       success: (result) => {
-        this.setState({ categories: result.categories });
+        const categories = Object.keys(result.categories).reduce((acc, key) => {
+            const { id, type } = result.categories[key];
+            return { ...acc, [id]: type };
+        }, {});
+
+        this.setState({ categories });
+
         return;
       },
       error: (error) => {
@@ -49,7 +55,7 @@ class QuizView extends Component {
     }
 
     $.ajax({
-      url: '/quizzes', //TODO: update request URL
+      url: '/quizzes',
       type: 'POST',
       dataType: 'json',
       contentType: 'application/json',

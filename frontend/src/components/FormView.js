@@ -10,7 +10,7 @@ class FormView extends Component {
       answer: '',
       difficulty: 1,
       category: 1,
-      categories: {},
+      categories: [],
     };
   }
 
@@ -19,7 +19,13 @@ class FormView extends Component {
       url: `/categories`, //TODO: update request URL
       type: 'GET',
       success: (result) => {
-        this.setState({ categories: result.categories });
+        const categories = Object.keys(result.categories).reduce((acc, key) => {
+            const { id, type } = result.categories[key];
+            return { ...acc, [id]: type };
+        }, {});
+
+        this.setState({ categories });
+
         return;
       },
       error: (error) => {
