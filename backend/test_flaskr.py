@@ -15,7 +15,7 @@ class TriviaTestCase(unittest.TestCase):
 
         # binds the app to the current context
         with self.app.app_context():
-            from models import setup_db, Question, Category
+            from models import setup_db
             setup_db(self.app, self.database_path)
     
     def tearDown(self):
@@ -55,6 +55,22 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'resource not found')
 
+    def test_delete_question(self):
+        with self.app.app_context():
+            from models import Question
+            question = Question.query.first()
+            res = self.client().delete('/questions/' + str(question.id))
+            data = json.loads(res.data)
+            self.assertEqual(res.status_code, 200)
+            self.assertEqual(data['success'], True)
+            self.assertEqual(data['deleted'], question.id)
+    
+    def test_404_delete_question(self):
+        res = self.client().delete('/questions/1000')
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'resource not found')
 
 # Make the tests conveniently executable
 if __name__ == "__main__":
