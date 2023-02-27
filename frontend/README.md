@@ -30,6 +30,11 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser. T
 npm start
 ```
 
+Troubleshooting: If you receive `error:03000086:digital envelope routines::initialization error` / `ERR_OSSL_EVP_UNSUPPORTED` error when running `npm start`, you may need to execute the following command before starting the app:
+```bash
+export NODE_OPTIONS=--openssl-legacy-provider
+```
+
 ### Request Formatting
 
 The frontend should be fairly straightforward and disgestible. You'll primarily work within the `components` folder in order to understand, and if you so choose edit, the endpoints utilized by the components. While working on your backend request handling and response formatting, you can reference the frontend to view how it parses the responses.

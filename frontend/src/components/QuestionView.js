@@ -138,6 +138,7 @@ class QuestionView extends Component {
             Categories
           </h2>
           <ul>
+            {/* list all categories and the given icon */}
             {Object.keys(this.state.categories).map((id) => (
               <li
                 key={id}
@@ -145,11 +146,11 @@ class QuestionView extends Component {
                   this.getByCategory(id);
                 }}
               >
-                {this.state.categories[id]}
+                {this.state.categories[id].type}
                 <img
                   className='category'
-                  alt={`${this.state.categories[id].toLowerCase()}`}
-                  src={`${this.state.categories[id].toLowerCase()}.svg`}
+                  alt={`${this.state.categories[id].type.toLowerCase()}`}
+                  src={`${this.state.categories[id].type.toLowerCase()}.svg`}
                 />
               </li>
             ))}
@@ -163,7 +164,7 @@ class QuestionView extends Component {
               key={q.id}
               question={q.question}
               answer={q.answer}
-              category={this.state.categories[q.category]}
+              category={this.state.categories[q.category].type}
               difficulty={q.difficulty}
               questionAction={this.questionAction(q.id)}
             />
