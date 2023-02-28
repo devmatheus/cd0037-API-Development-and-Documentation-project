@@ -45,9 +45,6 @@ class TriviaTestCase(unittest.TestCase):
         self.assertTrue(len(data['categories']))
         self.assertTrue(data['totalQuestions'])
 
-        # TODO: add current category
-        # self.assertTrue(data['currentCategory'])
-
     def test_404_get_questions(self):
         res = self.client().get('/questions?page=1000')
         data = json.loads(res.data)
@@ -101,9 +98,6 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data['success'], True)
         self.assertTrue(len(data['questions']))
         self.assertTrue(data['totalQuestions'])
-
-        # TODO: add current category
-        # self.assertTrue(data['currentCategory'])
 
     def test_400_search_question(self):
         res = self.client().post('/questions/search', json={})
