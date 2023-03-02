@@ -73,12 +73,13 @@ You will need to provide detailed documentation of your API endpoints including 
 
 ### Documentation Example
 
-`GET '/api/v1.0/categories'`
+`GET '/categories'`
 
 - Fetches a dictionary of categories in which the keys are the ids and the value is the corresponding string of the category
 - Request Arguments: None
 - Returns: An object with a single key, `categories`, that contains an object of `id: category_string` key: value pairs.
 
+Response
 ```json
 {
   "1": "Science",
@@ -89,6 +90,195 @@ You will need to provide detailed documentation of your API endpoints including 
   "6": "Sports"
 }
 ```
+
+`GET '/questions?page=1'`
+
+- Fetches a dictionary of questions, number of total questions, current category, categories;
+- Request Arguments: page (query parameter);
+- Returns: An object with `success`, `questions`, `totalQuestions`, `categories`, and `currentCategory`.
+
+Response
+```json
+{
+  "success": true,
+  "questions": [
+    {
+      "id": 1,
+      "question": "What is the capital of Alaska?",
+      "answer": "Juneau",
+      "difficulty": 4,
+      "category": 1
+    },
+    {
+      "id": 2,
+      "question": "The Viking spacecraft sent back to Earth photographs and reports about the surface of which planet?",
+      "answer": "Mars",
+      "difficulty": 4,
+      "category": 1
+    },
+    {
+      "id": 3,
+      "question": "Describe in words the exact direction that is 697.5° clockwise from due north?",
+      "answer": "North north west",
+      "difficulty": 2,
+      "category": 1
+    },
+    {
+      "id": 4,
+      "question": "What is the largest organ of the human body?",
+      "answer": "Skin",
+      "difficulty": 2,
+      "category": 1
+    }
+  ],
+  "totalQuestions": 4,
+  "categories": {
+    "1": "Science",
+    "2": "Art",
+    "3": "Geography",
+    "4": "History",
+    "5": "Entertainment",
+    "6": "Sports"
+  },
+  "currentCategory": null
+}
+```
+
+`DELETE '/questions/<int:question_id>'`
+- Deletes a question using a question ID;
+- Request Arguments: question_id (path parameter);
+- Returns: An object with `success`, and `deleted` (deleted id).
+
+Response
+```json
+{
+  "success": true,
+  "deleted": 1
+}
+```
+
+`POST '/questions'`
+- Creates a new question;
+- Request Arguments (JSON body): `question`, `answer`, `difficulty`, `category`;
+- Returns: An object with `success`, and `created` (last insert id).
+
+Request body
+```json
+{
+  "question": "What is the capital of Alaska?",
+  "answer": "Juneau",
+  "difficulty": 4,
+  "category": 1
+}
+```
+
+Response
+```json
+{
+  "success": true,
+  "created": 1
+}
+```
+
+`POST '/questions/search'`
+- Searches for questions;
+- Request Arguments (JSON body): `searchTerm`;
+- Returns: An object with `success`, `questions`, `totalQuestions`, `currentCategory`.
+
+Request body
+```json
+{
+  "searchTerm": "title"
+}
+```
+
+Response
+```json
+{
+  "success": true,
+  "questions": [
+    {
+      "id": 1,
+      "question": "What is the capital of Alaska?",
+      "answer": "Juneau",
+      "difficulty": 4,
+      "category": 1
+    },
+    {
+      "id": 2,
+      "question": "The Viking spacecraft sent back to Earth photographs and reports about the surface of which planet?",
+      "answer": "Mars",
+      "difficulty": 4,
+      "category": 1
+    },
+    {
+      "id": 3,
+      "question": "Describe in words the exact direction that is 697.5° clockwise from due north?",
+      "answer": "North north west",
+      "difficulty": 2,
+      "category": 1
+    },
+    {
+      "id": 4,
+      "question": "What is the largest organ of the human body?",
+      "answer": "Skin",
+      "difficulty": 2,
+      "category": 1
+    }
+  ],
+  "totalQuestions": 4,
+  "currentCategory": null
+}
+```
+
+`GET '/categories/<int:category_id>/questions'`
+- Fetches a dictionary of questions based on category;
+- Request Arguments: category_id (path parameter);
+- Returns: An object with `success`, `questions`, `totalQuestions`, `currentCategory`.
+
+Response
+```json
+{
+  "success": true,
+  "questions": [
+    {
+      "id": 1,
+      "question": "What is the capital of Alaska?",
+      "answer": "Juneau",
+      "difficulty": 4,
+      "category": 1
+    },
+    {
+      "id": 2,
+      "question": "The Viking spacecraft sent back to Earth photographs and reports about the surface of which planet?",
+      "answer": "Mars",
+      "difficulty": 4,
+      "category": 1
+    },
+    {
+      "id": 3,
+      "question": "Describe in words the exact direction that is 697.5° clockwise from due north?",
+      "answer": "North north west",
+      "difficulty": 2,
+      "category": 1
+    },
+    {
+      "id": 4,
+      "question": "What is the largest organ of the human body?",
+      "answer": "Skin",
+      "difficulty": 2,
+      "category": 1
+    }
+  ],
+  "totalQuestions": 4,
+  "currentCategory": 1
+}
+```
+
+`POST '/quizzes'`
+- Start the game; Fetches a random question within the given category, if provided, and that is not one of the previous questions;
+- Request Arguments (JSON body): `previous_questions`, `quiz_category`;
+- Returns: An object with `success`, `question`.
 
 ## Testing
 
